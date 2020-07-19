@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           leading: Icon(Icons.favorite_border),
-          title: Text("Random happy dog"),
+          title: Text("Random dog"),
         ),
         body: Column(
           children: <Widget>[
@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   image: NetworkImage(snapshot.data.message))),
                         );
                       } else if (snapshot.hasError) {
-                        return Text('Failed to fetch dog');
+                        return Text(snapshot.error.toString());
                       }
                       return Text('No dog');
                     })),
