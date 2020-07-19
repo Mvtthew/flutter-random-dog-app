@@ -43,17 +43,19 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         color: Colors.red,
+        iconSize: 30.0,
         icon: Icon(Icons.favorite),
       );
     }
     return IconButton(
       onPressed: () {
         setState(() {
-          _favoriteDogs.add(imageUrl);
+          _favoriteDogs.insert(0, imageUrl);
           saveFavoriteDogs(_favoriteDogs);
         });
       },
       icon: Icon(Icons.favorite_border),
+      iconSize: 30.0,
     );
   }
 
@@ -66,8 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: <Widget>[
             FlatButton.icon(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => FavoriteList(onRemoved: loadFavorites)));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              FavoriteList(onRemoved: loadFavorites)));
                 },
                 icon: Icon(Icons.favorite),
                 label: Text("Favorites"))
@@ -84,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         return Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
+                                  fit: BoxFit.contain,
                                   image: NetworkImage(snapshot.data.message))),
                         );
                       } else if (snapshot.hasError) {
@@ -102,11 +108,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    RaisedButton.icon(
-                        onPressed: _getDog,
-                        color: Colors.white,
-                        icon: Icon(Icons.favorite_border),
-                        label: Text("Get random dog")),
                     FutureBuilder(
                       future: _randomDog,
                       builder: (context, snapshot) {
@@ -115,7 +116,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                         return _favoriteButton(' ');
                       },
-                    )
+                    ),
+                    RaisedButton.icon(
+                        onPressed: _getDog,
+                        color: Colors.white,
+                        icon: Icon(Icons.favorite_border),
+                        label: Text("Get random dog"))
                   ],
                 ),
               ),

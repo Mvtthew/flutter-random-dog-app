@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/models/Dog.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class FavoriteList extends StatefulWidget {
-
   final VoidCallback onRemoved;
 
   FavoriteList({this.onRemoved});
@@ -24,42 +24,47 @@ class _FavoriteListState extends State<FavoriteList> {
     });
   }
 
+//  Remove item
+//
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Your favorite dogs"),
       ),
-      body: ListView.builder(
+      body: ListView.separated(
         itemCount: _favoriteDogs.length,
         itemBuilder: (BuildContext context, int index) {
-          return Row(
-            children: <Widget>[
-              Expanded(
-                flex: 8,
-                child: Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                      image:
-                      DecorationImage(image: NetworkImage(_favoriteDogs[index]))),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _favoriteDogs.remove(_favoriteDogs[index]);
-                      saveFavoriteDogs(_favoriteDogs);
-                      widget.onRemoved();
-                    });
-                  },
-                  icon: Icon(Icons.close),
-                ),
+          return Slidable(
+            actionPane: SlidableDrawerActionPane(),
+            actionExtentRatio: 0.25,
+            child: Container(
+              height: 250.0,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.contain,
+                      image: NetworkImage(_favoriteDogs[index]))),
+            ),
+            secondaryActions: [
+              IconSlideAction(
+                caption: "Remove",
+                color: Colors.red,
+                icon: Icons.cancel,
+                onTap: () {
+                  setState(() {
+                    _favoriteDogs.remove(_favoriteDogs[index]);
+                    saveFavoriteDogs(_favoriteDogs);
+                    widget.onRemoved();
+                  });
+                },
               )
             ],
           );
         },
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider();
+        }
       ),
     );
   }
