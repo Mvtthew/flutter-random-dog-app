@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   initState() {
     super.initState();
+    loadFavorites();
   }
 
   loadFavorites() {
