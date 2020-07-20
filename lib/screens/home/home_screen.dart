@@ -44,37 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Widget _favoriteButton(String imageUrl) {
-    if (_favoriteDogs.contains(imageUrl)) {
-      return IconButton(
-        onPressed: () {
-          setState(() {
-            _favoriteDogs.remove(imageUrl);
-            saveFavoriteDogs(_favoriteDogs);
-          });
-        },
-        color: Colors.red,
-        iconSize: 30.0,
-        icon: Icon(Icons.favorite),
-      );
-    }
-    return IconButton(
-      onPressed: () {
-        setState(() {
-          _favoriteDogs.insert(0, imageUrl);
-          saveFavoriteDogs(_favoriteDogs);
-        });
-      },
-      icon: Icon(Icons.favorite_border),
-      iconSize: 30.0,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.favorite_border),
         title: Text("Random dog"),
         actions: <Widget>[
           FlatButton.icon(
@@ -141,17 +114,40 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: null,
-        child: FutureBuilder(
-          future: _randomDog,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _favoriteButton(snapshot.data.message);
+      floatingActionButton: FutureBuilder(
+        future: _randomDog,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (_favoriteDogs.contains(snapshot.data.message)) {
+              return FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    _favoriteDogs.remove(snapshot.data.message);
+                    saveFavoriteDogs(_favoriteDogs);
+                  });
+                },
+                child: Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                ),
+              );
+            } else {
+              return FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    _favoriteDogs.insert(0, snapshot.data.message);
+                    saveFavoriteDogs(_favoriteDogs);
+                  });
+                },
+                child: Icon(Icons.favorite_border),
+              );
             }
-            return _favoriteButton(' ');
-          },
-        ),
+          }
+          return FloatingActionButton(
+            onPressed: null,
+            child: Icon(Icons.favorite_border),
+          );
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

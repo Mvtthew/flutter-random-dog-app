@@ -12,7 +12,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Random Dog',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.cyan,
+        fontFamily: 'NotoSans',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomeScreen(),
