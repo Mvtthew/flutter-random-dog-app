@@ -34,38 +34,48 @@ class _FavoriteListState extends State<FavoriteList> {
         title: Text("Your favorite dogs"),
       ),
       body: ListView.separated(
-        itemCount: _favoriteDogs.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Slidable(
-            actionPane: SlidableDrawerActionPane(),
-            actionExtentRatio: 0.25,
-            child: Container(
-              height: 250.0,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.contain,
-                      image: NetworkImage(_favoriteDogs[index]))),
-            ),
-            secondaryActions: [
-              IconSlideAction(
-                caption: "Remove",
-                color: Colors.red,
-                icon: Icons.cancel,
-                onTap: () {
-                  setState(() {
-                    _favoriteDogs.remove(_favoriteDogs[index]);
-                    saveFavoriteDogs(_favoriteDogs);
-                    widget.onRemoved();
-                  });
-                },
-              )
-            ],
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return Divider();
-        }
-      ),
+          itemCount: _favoriteDogs.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Slidable(
+              actionPane: SlidableDrawerActionPane(),
+              actionExtentRatio: 0.25,
+              child: Container(
+                height: 250.0,
+                margin: EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Color.fromARGB(30, 0, 0, 0),
+                          offset: Offset(0, 0),
+                          blurRadius: 20.0)
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                    image: DecorationImage(
+                        fit: BoxFit.contain,
+                        image: NetworkImage(_favoriteDogs[index]))),
+              ),
+              secondaryActions: [
+                IconSlideAction(
+                  caption: "Remove",
+                  color: Colors.red,
+                  icon: Icons.cancel,
+                  onTap: () {
+                    setState(() {
+                      _favoriteDogs.remove(_favoriteDogs[index]);
+                      saveFavoriteDogs(_favoriteDogs);
+                      widget.onRemoved();
+                    });
+                  },
+                )
+              ],
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return Divider(
+              height: 0,
+            );
+          }),
     );
   }
 }

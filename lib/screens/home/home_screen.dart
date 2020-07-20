@@ -11,11 +11,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Future<Dog> _randomDog;
+  Future<Dog> _previousRandomDog;
   List<String> _favoriteDogs = new List();
 
   void _getDog() {
     setState(() {
+      if (_randomDog != null) {
+        _previousRandomDog = _randomDog;
+      }
       _randomDog = getRandomDog();
+    });
+  }
+
+  void _getPreviousDog() {
+    setState(() {
+      _randomDog = _previousRandomDog;
+      _previousRandomDog = null;
     });
   }
 
@@ -108,6 +119,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
+                    FutureBuilder(
+                        future: _previousRandomDog,
+                        builder: (context, snapshot) {
+                          if (_previousRandomDog != null) {
+                            return IconButton(
+                                onPressed: _getPreviousDog,
+                                icon: Icon(Icons.subdirectory_arrow_left),
+                                iconSize: 30);
+                          }
+                          return IconButton(
+                              onPressed: null,
+                              icon: Icon(Icons.subdirectory_arrow_left),
+                              iconSize: 30,
+                              color: Colors.white60);
+                        }),
                     FutureBuilder(
                       future: _randomDog,
                       builder: (context, snapshot) {
