@@ -73,86 +73,104 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: Icon(Icons.favorite_border),
-          title: Text("Random dog"),
-          actions: <Widget>[
-            FlatButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              FavoriteList(onRemoved: loadFavorites)));
-                },
-                icon: Icon(Icons.favorite),
-                label: Text("Favorites"))
-          ],
-        ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-                flex: 10,
-                child: FutureBuilder(
-                    future: _randomDog,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  fit: BoxFit.contain,
-                                  image: NetworkImage(snapshot.data.message))),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Container(
-                          alignment: Alignment(0, 0),
-                          child: Text(snapshot.error.toString()),
-                        );
-                      }
+      appBar: AppBar(
+        leading: Icon(Icons.favorite_border),
+        title: Text("Random dog"),
+        actions: <Widget>[
+          FlatButton.icon(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            FavoriteList(onRemoved: loadFavorites)));
+              },
+              icon: Icon(Icons.favorite),
+              label: Text("Favorites"))
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+              child: FutureBuilder(
+                  future: _randomDog,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
                       return Container(
-                          alignment: Alignment(0, 0), child: Text('No dog'));
-                    })),
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: Colors.teal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    FutureBuilder(
-                        future: _previousRandomDog,
-                        builder: (context, snapshot) {
-                          if (_previousRandomDog != null) {
-                            return IconButton(
-                                onPressed: _getPreviousDog,
-                                icon: Icon(Icons.subdirectory_arrow_left),
-                                iconSize: 30);
-                          }
-                          return IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.subdirectory_arrow_left),
-                              iconSize: 30,
-                              color: Colors.white60);
-                        }),
-                    FutureBuilder(
-                      future: _randomDog,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return _favoriteButton(snapshot.data.message);
-                        }
-                        return _favoriteButton(' ');
-                      },
-                    ),
-                    RaisedButton.icon(
-                        onPressed: _getDog,
-                        color: Colors.white,
-                        icon: Icon(Icons.favorite_border),
-                        label: Text("Get random dog"))
-                  ],
-                ),
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.contain,
+                                image: NetworkImage(snapshot.data.message))),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Container(
+                        alignment: Alignment(0, 0),
+                        child: Text(snapshot.error.toString()),
+                      );
+                    }
+                    return Container(
+                        alignment: Alignment(0, 0), child: Text('No dog'));
+                  })),
+          Expanded(
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  RaisedButton.icon(
+                      onPressed: _getDog,
+                      color: Colors.white,
+                      icon: Icon(Icons.favorite_border),
+                      label: Text("Get random dog"))
+                ],
               ),
-            )
-          ],
-        ));
+            ),
+          )
+        ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        child: Container(
+          height: 70.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Spacer(
+                flex: 1,
+              ),
+              FutureBuilder(
+                  future: _previousRandomDog,
+                  builder: (context, snapshot) {
+                    if (_previousRandomDog != null) {
+                      return IconButton(
+                        onPressed: _getPreviousDog,
+                        icon: Icon(Icons.subdirectory_arrow_left),
+                      );
+                    }
+                    return IconButton(
+                        onPressed: null,
+                        icon: Icon(Icons.subdirectory_arrow_left),
+                        color: Colors.white60);
+                  }),
+              Spacer(
+                flex: 4,
+              )
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: null,
+        child: FutureBuilder(
+          future: _randomDog,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _favoriteButton(snapshot.data.message);
+            }
+            return _favoriteButton(' ');
+          },
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
   }
 }
