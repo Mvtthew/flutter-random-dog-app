@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Random dog"),
+        title: Text("RDog"),
         actions: <Widget>[
           FlatButton.icon(
               onPressed: () {
@@ -69,11 +69,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   future: _randomDog,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.contain,
-                                image: NetworkImage(snapshot.data.message))),
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.all(20.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.0)
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16.0),
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image.network(snapshot.data.message),
+                              ),
+                            )
+                          )
+                        ],
                       );
                     } else if (snapshot.hasError) {
                       return Container(
@@ -82,7 +95,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }
                     return Container(
-                        alignment: Alignment(0, 0), child: Text('No dog'));
+                        alignment: Alignment(0, 0),
+                        child: Text('Select "NEXT" and load random dog...'));
                   }))
         ],
       ),

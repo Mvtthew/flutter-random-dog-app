@@ -43,12 +43,6 @@ class _FavoriteListState extends State<FavoriteList> {
                 height: 250.0,
                 margin: EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromARGB(30, 0, 0, 0),
-                          offset: Offset(0, 0),
-                          blurRadius: 20.0)
-                    ],
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(16.0)),
                     image: DecorationImage(
