@@ -110,21 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                     return Container(
                         alignment: Alignment(0, 0), child: Text('No dog'));
-                  })),
-          Expanded(
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  RaisedButton.icon(
-                      onPressed: _getDog,
-                      color: Colors.white,
-                      icon: Icon(Icons.favorite_border),
-                      label: Text("Get random dog"))
-                ],
-              ),
-            ),
-          )
+                  }))
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -134,9 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Spacer(
-                flex: 1,
-              ),
               FutureBuilder(
                   future: _previousRandomDog,
                   builder: (context, snapshot) {
@@ -151,9 +134,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: Icon(Icons.subdirectory_arrow_left),
                         color: Colors.white60);
                   }),
-              Spacer(
-                flex: 4,
-              )
+              IconButton(
+                  onPressed: _getDog,
+                  icon: Icon(Icons.subdirectory_arrow_right)),
             ],
           ),
         ),
