@@ -70,32 +70,41 @@ class _HomeScreenState extends State<HomeScreen> {
                   future: _randomDog,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PhotoScreen(
-                                      photoUrl: snapshot.data.message)));
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Container(
-                                margin: EdgeInsets.all(20.0),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16.0)),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  child: FittedBox(
-                                    fit: BoxFit.fill,
-                                    child: Image.network(snapshot.data.message),
-                                  ),
-                                ))
-                          ],
-                        ),
-                      );
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PhotoScreen(
+                                        photoUrl: snapshot.data.message)));
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Container(
+                                  margin: EdgeInsets.all(20.0),
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(16.0)),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    child: FittedBox(
+                                      fit: BoxFit.fill,
+                                      child:
+                                          Image.network(snapshot.data.message),
+                                    ),
+                                  ))
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          alignment: Alignment(0, 0),
+                          child: CircularProgressIndicator(),
+                        );
+                      }
                     } else if (snapshot.hasError) {
                       return Container(
                         alignment: Alignment(0, 0),
