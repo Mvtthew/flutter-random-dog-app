@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/models/Dog.dart';
 import 'package:flutter_login/screens/home/favorite_list.dart';
+import 'package:flutter_login/screens/home/photo_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -69,24 +70,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   future: _randomDog,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.all(20.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.0)
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16.0),
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Image.network(snapshot.data.message),
-                              ),
-                            )
-                          )
-                        ],
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PhotoScreen(
+                                      photoUrl: snapshot.data.message)));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                                margin: EdgeInsets.all(20.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.0)),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: Image.network(snapshot.data.message),
+                                  ),
+                                ))
+                          ],
+                        ),
                       );
                     } else if (snapshot.hasError) {
                       return Container(

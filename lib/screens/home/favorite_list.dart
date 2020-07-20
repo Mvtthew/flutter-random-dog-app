@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/models/Dog.dart';
+import 'package:flutter_login/screens/home/photo_screen.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class FavoriteList extends StatefulWidget {
@@ -39,15 +40,24 @@ class _FavoriteListState extends State<FavoriteList> {
             return Slidable(
               actionPane: SlidableDrawerActionPane(),
               actionExtentRatio: 0.25,
-              child: Container(
-                height: 250.0,
-                margin: EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    image: DecorationImage(
-                        fit: BoxFit.contain,
-                        image: NetworkImage(_favoriteDogs[index]))),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              PhotoScreen(photoUrl: _favoriteDogs[index])));
+                },
+                child: Container(
+                  height: 250.0,
+                  margin: EdgeInsets.all(20.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      image: DecorationImage(
+                          fit: BoxFit.contain,
+                          image: NetworkImage(_favoriteDogs[index]))),
+                ),
               ),
               secondaryActions: [
                 IconSlideAction(
